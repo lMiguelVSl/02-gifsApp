@@ -4,9 +4,10 @@
     </h3>
     <hr class="text"/>
     <div class="list-group list-reset">
-        <a href="#"
-           class="list-group-item list-group-item-action"
-           *ngFor="let item of historial"
+        <a *ngFor="let item of historial" 
+            (click)="buscar(item)"
+            class="list-group-item list-group-item-action"
+           
         >
             {{item | titlecase}} <!-- uppercase if the value -->
         </a>
