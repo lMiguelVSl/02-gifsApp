@@ -55,13 +55,12 @@ export class GifsService {
     .set( 'limit', '10' )
     .set( 'q', query );
 
-    console.log(params.toString());
+    
     //forma de subscribirnos a un servicio, especificando el tipo de dato recibido (resp:any) para poder llamar sus aributos 
     this.http.get<SearchGifsResponse>( `${ this.servicioUrl }/search?${ params }` ) //interpolacion para mandar el valor
     .subscribe( ( resp ) => {
       this.resultado = resp.data;
       localStorage.setItem( 'Gifs', JSON.stringify( this.resultado ) );
-      console.log( resp.data );
     })
     
   }
