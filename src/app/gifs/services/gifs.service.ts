@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpParams } from "@angular/common/http";
 import { Gif, SearchGifsResponse } from '../interface/gifs.interface';
 
 @Injectable({
@@ -7,8 +7,9 @@ import { Gif, SearchGifsResponse } from '../interface/gifs.interface';
 })
 export class GifsService {
   
-  private apiKey    : string = 'eUYOvSN1Y33k40ou9p4CD57IZ1FUeeJf' ; 
-  private _historial: string[] = [];
+  private servicioUrl : string   = 'https://api.giphy.com/v1/gifs';
+  private apiKey      : string   = 'eUYOvSN1Y33k40ou9p4CD57IZ1FUeeJf' ; 
+  private _historial  : string[] = [];
 
   public resultado : Gif[] = []; 
 
@@ -47,8 +48,16 @@ export class GifsService {
          localStorage.setItem( 'Historial', JSON.stringify( this._historial ) );
     }
 
+    
+
+    const params = new HttpParams()
+    .set( 'api_key', this.apiKey )
+    .set( 'limit', '10' )
+    .set( 'q', query );
+
+    console.log(params.toString());
     //forma de subscribirnos a un servicio, especificando el tipo de dato recibido (resp:any) para poder llamar sus aributos 
-    this.http.get<SearchGifsResponse>( `https://api.giphy.com/v1/gifs/search?limit=10&api_key=${ this.apiKey }&q=${ query }` ) //interpolacion para mandar el valor
+    this.http.get<SearchGifsResponse>( `${ this.servicioUrl }/search?${ params }` ) //interpolacion para mandar el valor
     .subscribe( ( resp ) => {
       this.resultado = resp.data;
       localStorage.setItem( 'Gifs', JSON.stringify( this.resultado ) );
